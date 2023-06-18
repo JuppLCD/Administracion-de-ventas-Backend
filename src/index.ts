@@ -15,6 +15,12 @@ app.get('/', (_, res) => {
 	res.send('HOLA MUNDO');
 });
 
+import { notFound, logErrors, clientErrorHandler, errorHandler } from './middlewares/error';
+app.use(notFound);
+app.use(logErrors);
+app.use(clientErrorHandler);
+app.use(errorHandler);
+
 app.listen(PORT, () => {
 	console.log('Applicacion en puerto ' + PORT);
 });
