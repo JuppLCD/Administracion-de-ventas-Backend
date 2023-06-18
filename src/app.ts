@@ -11,6 +11,10 @@ app.set('port', process.env.PORT || 8000);
 app.use(cors());
 app.use(express.json());
 
+// Router api
+import { router } from './routes';
+app.use('/api', router);
+
 app.get('/', (_, res) => {
 	res.send('HOLA MUNDO');
 });
