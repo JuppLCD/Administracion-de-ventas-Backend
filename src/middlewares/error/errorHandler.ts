@@ -1,15 +1,12 @@
+import boom, { isBoom } from '@hapi/boom';
 import { ErrorRequestHandler } from 'express';
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-	console.log('ERROR HANDLER');
+	let payload = boom.serverUnavailable('An internal server error occurred').output.payload;
 
-	let payload = {
-		statusCode: 500,
-		error: 'Internal Server Error',
-		message: 'An internal server error occurred',
-	};
-
-	if (err.message && err.statusCode && err.error) {
+	if (isBoom(err)) {
+		payload = { ...err.output.payload };
+	} else if (err.message && err.statusCode && err.error) {
 		payload = {
 			statusCode: err.statusCode,
 			error: err.error,
