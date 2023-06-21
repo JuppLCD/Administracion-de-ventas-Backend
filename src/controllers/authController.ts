@@ -4,7 +4,7 @@ import boom from '@hapi/boom';
 import { generateCode } from '../utils/jwtCode';
 import { sendCode } from '../utils/mailer';
 
-import { users } from '../data/user';
+import { UserModel } from '../db';
 
 export class AuthController {
 	static generateCode = async (req: Request, res: Response, next: NextFunction) => {
@@ -12,16 +12,20 @@ export class AuthController {
 
 		try {
 			// Busqueda en DB
-			const user = users.find((user) => user.email === email);
+			const user = await UserModel.findOne({ where: { email } });
 
 			if (!user) {
 				throw boom.notFound('Usuario no existente en la base de datos');
 			}
-			// Generacion de codigo
-			const { code, ...payloadJWTCode } = user;
-			const newCode = await generateCode(payloadJWTCode);
-			await sendCode({ code: newCode, email: user.email });
 
+			// Generar codigo y enviar
+			const { code, ...payloadJWTCode } = user.dataValues;
+			const newCode = await generateCode(payloadJWTCode);
+			sendCode({ code: newCode, email });
+
+			await user.update({ code: newCode });
+
+			// TODO: Tengo que enviar el codigo como una cokie
 			res.json({
 				message: 'El codigo fue generado y enviado con exito',
 				newCode,
@@ -31,7 +35,7 @@ export class AuthController {
 		}
 	};
 
-	static login = (req: Request, res: Response, next: NextFunction) => {
+	static login = async (req: Request, res: Response, next: NextFunction) => {
 		const { email, code } = req.body;
 
 		try {
@@ -40,16 +44,17 @@ export class AuthController {
 			}
 
 			// Busqueda en DB
-			const user = users.find((user) => user.email === email);
+			const user = await UserModel.findOne({ where: { email } });
 
 			if (!user) {
 				throw boom.notFound('Usuario no existente en la base de datos');
 			}
 
-			if (user.code !== code) {
-				throw boom.unauthorized('El codigo no es valido');
+			if (user.dataValues.code !== code) {
+				throw boom.unauthorized('El codigo no coincide');
 			}
 
+			// TODO: Tengo que enviar el codigo como una cokie
 			res.json({
 				message: 'INICIASTE SESION ' + code,
 			});
