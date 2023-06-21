@@ -1,7 +1,7 @@
 export interface IUser {
-	code: string;
 	id: number;
 	email: string;
+	code: string;
 }
 
 export type IPayloadJWTCode = Omit<IUser, 'code'>;
