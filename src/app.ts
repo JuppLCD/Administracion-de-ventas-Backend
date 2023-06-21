@@ -5,7 +5,10 @@ import cors from 'cors';
 const app = express();
 
 // Settings
-app.set('port', process.env.PORT || 8000);
+if (!process.env.PORT) {
+	console.log('The port of the app was not placed in the environment variables, so it will run on port 8000');
+}
+app.set('port', Number(process.env.PORT ?? 8000));
 
 // Middlewares
 app.use(cors());

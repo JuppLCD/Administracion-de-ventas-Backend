@@ -1,5 +1,9 @@
 import nodemailer from 'nodemailer';
 
+if (!process.env.MAILER_EMAIL || !process.env.MAILER_PASSWORD) {
+	throw new Error('The variable "MAILER_EMAIL" or "MAILER_PASSWORD" cannot be found among the environment variables');
+}
+
 const transporter = nodemailer.createTransport({
 	host: process.env.MAILER_HOST ?? 'smtp.ethereal.email',
 	port: Number(process.env.MAILER_PORT ?? 587),
