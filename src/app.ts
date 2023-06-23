@@ -1,14 +1,14 @@
 import 'dotenv/config';
+
+import { ENV } from './config';
+
 import express from 'express';
 import cors from 'cors';
 
 const app = express();
 
 // Settings
-if (!process.env.PORT) {
-	console.log('The port of the app was not placed in the environment variables, so it will run on port 8000');
-}
-app.set('port', Number(process.env.PORT ?? 8000));
+app.set('port', ENV.PORT);
 
 // Middlewares
 app.use(cors());
