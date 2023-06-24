@@ -23,6 +23,9 @@ export default function userSchema(sequelize: Sequelize) {
 			code: {
 				type: DataTypes.STRING,
 			},
+			expire_code: {
+				type: DataTypes.STRING(15),
+			},
 		},
 		{
 			// Other model options go here
