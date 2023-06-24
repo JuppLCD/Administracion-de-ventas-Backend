@@ -1,7 +1,7 @@
 @host= http://localhost:8001/api/auth
 
 @email = test@test.com
-@code = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiaWF0IjoxNjg3Mzg0NTY2LCJleHAiOjE2ODczODgxNjZ9.43H9Mc1OnBXvgmDIhU6Pr4-9jhqq40MkiMcIpOn81L8
+@code = 5k3NO5KIbM
 
 ### Generate and send conde
 GET {{host}}/code

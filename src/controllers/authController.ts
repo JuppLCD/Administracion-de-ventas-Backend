@@ -1,10 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import boom from '@hapi/boom';
 
-import { generateCode } from '../utils/jwtCode';
-import { sendCode } from '../utils/mailer';
-
 import { UserModel } from '../db';
+
+import { UserCode } from '../utils/userCode';
+import { sendCode } from '../utils/mailer';
+import { generateToken } from '../utils/jwtToken';
 
 export class AuthController {
 	static generateCode = async (req: Request, res: Response, next: NextFunction) => {
@@ -19,13 +20,11 @@ export class AuthController {
 			}
 
 			// Generar codigo y enviar
-			const { code, ...payloadJWTCode } = user.dataValues;
-			const newCode = await generateCode(payloadJWTCode);
+			const { newCode, new_expire_code } = UserCode.generateCode();
 			sendCode({ code: newCode, email });
 
-			await user.update({ code: newCode });
+			await user.update({ code: newCode, expire_code: new_expire_code });
 
-			// TODO: Tengo que enviar el codigo como una cokie
 			res.json({
 				message: 'El codigo fue generado y enviado con exito',
 				newCode,
@@ -54,9 +53,17 @@ export class AuthController {
 				throw boom.unauthorized('El codigo no coincide');
 			}
 
+			if (UserCode.isExpires(user.dataValues.expire_code)) {
+				throw boom.unauthorized('El codigo ya expiro');
+			}
+
+			const { code: userCode, ...payloadJWT } = user.dataValues;
+			const token = await generateToken(payloadJWT);
+
 			// TODO: Tengo que enviar el codigo como una cokie
 			res.json({
 				message: 'INICIASTE SESION ' + code,
+				token: token,
 			});
 		} catch (err) {
 			next(err);
