@@ -3,16 +3,16 @@ import boom from '@hapi/boom';
 
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
-import { verifyCode } from '../utils/jwtCode';
+import { verifyToken } from '../utils/jwtToken';
 
 export default async function authJwt(req: Request, res: Response, next: NextFunction) {
-	const token: string | undefined = req.headers['authorization'] || req.body.code;
+	const token: string | undefined = req.headers['authorization'] || req.body.token;
 	if (!token) {
 		next(boom.unauthorized('Authorization required'));
 	}
 
 	try {
-		const info = await verifyCode(token as string);
+		const info = await verifyToken(token as string);
 
 		req.body.infoToken = info;
 		req.body.code = token;
