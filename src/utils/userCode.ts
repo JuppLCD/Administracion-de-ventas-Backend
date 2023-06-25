@@ -18,7 +18,7 @@ export class UserCode {
 		const date = new Date();
 
 		// 15 minutes for the code to expire
-		date.setMinutes(15);
+		date.setMinutes(date.getMinutes() + 15);
 
 		return `${date.getTime()}`;
 	};
