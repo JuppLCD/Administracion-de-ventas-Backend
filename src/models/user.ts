@@ -1,12 +1,10 @@
-import { DataTypes, Optional } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import type { Sequelize, Model } from 'sequelize';
-import type { IUser } from '../types/user.interface';
-
-type UserCreationAttributes = Optional<IUser, 'id'>;
+import type { Sequelize } from 'sequelize';
+import type { IUserModel } from '../types/user.interface';
 
 export default function userSchema(sequelize: Sequelize) {
-	return sequelize.define<Model<IUser, UserCreationAttributes>>(
+	return sequelize.define<IUserModel>(
 		'User',
 		{
 			id: {

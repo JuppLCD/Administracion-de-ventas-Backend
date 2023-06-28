@@ -1,3 +1,5 @@
+import type { Model, Optional } from 'sequelize';
+
 export interface IUser {
 	id: number;
 	email: string;
@@ -6,3 +8,7 @@ export interface IUser {
 }
 
 export type IPayloadJWT = Omit<IUser, 'code'>;
+
+type IUserCreationAttributes = Optional<IUser, 'id'>;
+
+export type IUserModel = Model<IUser, IUserCreationAttributes>;
