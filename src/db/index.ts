@@ -8,6 +8,7 @@ export default async function connectToDB() {
 	try {
 		await sequelize.authenticate();
 		console.log('Connection has been established successfully.');
+		return sequelize;
 	} catch (err) {
 		console.error('Unable to connect to the database: ', err);
 	}

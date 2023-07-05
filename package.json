@@ -1,11 +1,12 @@
 {
 	"name": "administracion-de-ventas-backend",
 	"private": true,
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"scripts": {
 		"dev": "nodemon -w *.ts -e ts -x ts-node --files -H -T ./src/index.ts",
 		"build": "tsc",
-		"start": "node ./dist"
+		"start": "node ./dist",
+		"seeds": "ts-node ./src/seeds"
 	},
 	"dependencies": {
 		"@hapi/boom": "^10.0.1",
