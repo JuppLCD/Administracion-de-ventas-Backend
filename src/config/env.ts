@@ -1,3 +1,5 @@
+import 'dotenv/config';
+
 // Fundamental variables for NodeJS
 if (!process.env.PORT) {
 	console.log('The port of the app was not placed in the environment variables, so it will run on port 8000');

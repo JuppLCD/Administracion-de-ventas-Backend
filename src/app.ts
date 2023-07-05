@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 import { ENV } from './config';
 
 import express from 'express';
