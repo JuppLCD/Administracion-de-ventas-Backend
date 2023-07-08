@@ -1,3 +1,5 @@
+import { ENV } from '../config';
+
 import connectToDB from '../db';
 
 import { userSeed } from './userSeed';
@@ -25,4 +27,8 @@ async function seedDB() {
 	}
 }
 
-seedDB();
+if (ENV.NODE_ENV === 'dev') {
+	seedDB();
+} else {
+	throw new Error('Solo se puede hacer seed en la DB si la variable de entorno "NODE_ENV" no es "dev"');
+}

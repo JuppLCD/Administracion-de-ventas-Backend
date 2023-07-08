@@ -25,6 +25,7 @@ if (!process.env.MAILER_EMAIL || !process.env.MAILER_PASSWORD) {
 export const ENV = {
 	// Settings NodeJS
 	PORT: Number(process.env.PORT),
+	NODE_ENV: process.env.NODE_ENV,
 
 	// Settings DB
 	DB_CONNECTION_URI: process.env.DB_CONNECTION_URI,
