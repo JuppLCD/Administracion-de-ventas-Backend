@@ -13,6 +13,7 @@ export default function userSchema(sequelize: Sequelize) {
 				autoIncrement: true,
 				allowNull: false,
 			},
+
 			email: {
 				type: DataTypes.STRING,
 				allowNull: false,

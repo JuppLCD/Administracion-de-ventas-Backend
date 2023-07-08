@@ -2,6 +2,7 @@ import type { Model, Optional } from 'sequelize';
 
 export interface IUser {
 	id: number;
+
 	email: string;
 	code: string;
 	expire_code: string;
