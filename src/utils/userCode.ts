@@ -1,14 +1,8 @@
+import createCode from './createCode';
+
 export class UserCode {
 	static generateCode = () => {
-		const possibleValues = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		const lenCode = 10;
-
-		let newCode = '';
-
-		for (let i = 0; i < lenCode; i++) {
-			const randomIndex = Math.floor(Math.random() * possibleValues.length);
-			newCode += possibleValues[randomIndex];
-		}
+		const newCode = createCode();
 
 		const new_expire_code = this.codeExpires();
 		return { newCode, new_expire_code };
