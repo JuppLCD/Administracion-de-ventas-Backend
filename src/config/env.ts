@@ -29,6 +29,7 @@ export const ENV = {
 
 	// Settings DB
 	DB_CONNECTION_URI: process.env.DB_CONNECTION_URI,
+	DB_LOGGING: process.env.DB_LOGGING === 'true',
 
 	// JWT
 	JWT_SECRET_KEY: process.env.JWT_SECRET_KEY,
