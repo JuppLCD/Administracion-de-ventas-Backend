@@ -1,10 +1,10 @@
 @host= http://localhost:8001/api/auth
 
 @email = test@test.com
-@code = 5k3NO5KIbM
+@code = SaMk0fJwz1
 
 ### Generate and send conde
-GET {{host}}/code
+POST {{host}}/code
 Content-Type: application/json
 
 {
