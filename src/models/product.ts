@@ -20,7 +20,6 @@ export default function productSchema(sequelize: Sequelize) {
 
 			name: {
 				type: DataTypes.STRING,
-				unique: true,
 			},
 			description: {
 				type: DataTypes.STRING,
@@ -34,7 +33,7 @@ export default function productSchema(sequelize: Sequelize) {
 			},
 
 			price: {
-				type: DataTypes.DECIMAL,
+				type: DataTypes.DECIMAL(10, 4),
 			},
 			stock: {
 				type: DataTypes.INTEGER,
