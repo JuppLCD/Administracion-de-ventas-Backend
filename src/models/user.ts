@@ -43,6 +43,9 @@ export default function userSchema(sequelize: Sequelize) {
 			address: {
 				type: DataTypes.STRING,
 			},
+			fullName: {
+				type: DataTypes.STRING,
+			},
 		},
 		{
 			// Other model options go here

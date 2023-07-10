@@ -10,9 +10,14 @@ export interface IUser {
 
 	document_type: string;
 	document_number: string;
+
 	phone: string;
 	address: string;
+	fullName: string;
 }
+
+// TODO: Ver que tipos de documentos hay
+// export type IDocumentType = 'DNI' | 'Cédula de identidad' | 'Pasaporte';
 
 export type IPayloadJWT = Omit<IUser, 'code'>;
 
