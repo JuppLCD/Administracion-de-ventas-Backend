@@ -14,13 +14,14 @@ export default function personSchema(sequelize: Sequelize) {
 				allowNull: false,
 			},
 
-			document_number: {
-				type: DataTypes.INTEGER,
+			type_person: {
+				type: DataTypes.ENUM('0', '1'), // natural (0) or legal (1) person
+				allowNull: false,
 			},
-			document_type: {
+			document_number: {
 				type: DataTypes.STRING,
 			},
-			type_person: {
+			document_type: {
 				type: DataTypes.STRING,
 			},
 
@@ -28,6 +29,9 @@ export default function personSchema(sequelize: Sequelize) {
 				type: DataTypes.STRING,
 			},
 			address: {
+				type: DataTypes.STRING,
+			},
+			name: {
 				type: DataTypes.STRING,
 			},
 		},
