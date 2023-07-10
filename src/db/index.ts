@@ -1,13 +1,18 @@
 import { sequelize } from './connection';
 
 // Models
+import roleSchema from '../models/role';
 import userSchema from './../models/user';
 import categorySchema from '../models/category';
 import productSchema from '../models/product';
 
+const RoleModel = roleSchema(sequelize);
 const UserModel = userSchema(sequelize);
 const CategoryModel = categorySchema(sequelize);
 const ProductModel = productSchema(sequelize);
+
+UserModel.belongsTo(RoleModel, { foreignKey: 'role_id' });
+RoleModel.hasMany(UserModel, { foreignKey: 'role_id' });
 
 ProductModel.belongsTo(CategoryModel, { foreignKey: 'category_id' });
 CategoryModel.hasMany(ProductModel, { foreignKey: 'category_id' });
@@ -22,4 +27,4 @@ export default async function connectToDB() {
 	}
 }
 
-export { UserModel, CategoryModel, ProductModel };
+export { RoleModel, UserModel, CategoryModel, ProductModel };

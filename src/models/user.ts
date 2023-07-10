@@ -13,6 +13,10 @@ export default function userSchema(sequelize: Sequelize) {
 				autoIncrement: true,
 				allowNull: false,
 			},
+			role_id: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+			},
 
 			email: {
 				type: DataTypes.STRING,
@@ -24,6 +28,20 @@ export default function userSchema(sequelize: Sequelize) {
 			},
 			expire_code: {
 				type: DataTypes.STRING(15),
+			},
+
+			document_number: {
+				type: DataTypes.STRING,
+			},
+			document_type: {
+				type: DataTypes.STRING,
+			},
+
+			phone: {
+				type: DataTypes.STRING,
+			},
+			address: {
+				type: DataTypes.STRING,
 			},
 		},
 		{
