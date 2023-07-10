@@ -1,3 +1,5 @@
+import { faker } from '@faker-js/faker';
+
 import { ProductModel, CategoryModel } from '../db';
 import createCode from '../utils/createCode';
 
@@ -12,12 +14,12 @@ export async function productSeed() {
 		await ProductModel.create({
 			category_id: category.id,
 
-			name: `Product - ${i + 1}`,
-			description: `Producto generado automaticamente nro ${i + 1}`,
+			name: faker.commerce.productName(),
+			description: faker.commerce.productDescription(),
 			code: createCode(5),
 			img: 'https://dummyimage.com/300x200/000/fff.png',
-			price: 500,
-			stock: 5,
+			price: faker.number.float({ min: 10, max: 600, precision: 0.01 }),
+			stock: faker.number.int({ min: 1, max: 50 }),
 		});
 	}
 }
