@@ -21,11 +21,14 @@ export default function productSchema(sequelize: Sequelize) {
 			name: {
 				type: DataTypes.STRING,
 			},
+			type: {
+				type: DataTypes.STRING,
+			},
 			description: {
 				type: DataTypes.STRING,
 			},
 			code: {
-				type: DataTypes.STRING,
+				type: DataTypes.STRING(5),
 				unique: true,
 			},
 			img: {
@@ -33,7 +36,7 @@ export default function productSchema(sequelize: Sequelize) {
 			},
 
 			price: {
-				type: DataTypes.DECIMAL(10, 4),
+				type: DataTypes.DECIMAL(10, 3),
 			},
 			stock: {
 				type: DataTypes.INTEGER,

@@ -5,6 +5,7 @@ export interface IProduct {
 	category_id: number;
 
 	name: string;
+	type: string;
 	description: string;
 	code: string;
 	img: string;

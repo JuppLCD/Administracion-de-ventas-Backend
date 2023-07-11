@@ -1,7 +1,7 @@
 {
 	"name": "administracion-de-ventas-backend",
 	"private": true,
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"scripts": {
 		"dev": "nodemon -w *.ts -e ts -x ts-node --files -H -T ./src/index.ts",
 		"build": "tsc",
