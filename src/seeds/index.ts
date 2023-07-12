@@ -5,6 +5,7 @@ import connectToDB from '../db';
 import { userSeed } from './userSeed';
 import { categorySeed } from './categorySeed';
 import { productSeed } from './productSeed';
+import { personSeed } from './personSeed';
 
 async function seedDB() {
 	const sequelize = await connectToDB();
@@ -16,6 +17,7 @@ async function seedDB() {
 
 	try {
 		await sequelize.sync({ force: true });
+		console.log('Restored DB');
 
 		await userSeed();
 		console.log('User seeding was done successfully');
@@ -23,6 +25,8 @@ async function seedDB() {
 		console.log('Category seeding was done successfully');
 		await productSeed();
 		console.log('Product seeding was done successfully');
+		await personSeed();
+		console.log('Person seeding was done successfully');
 
 		console.log('##################################');
 		console.log('The seeding of the database was carried out correctly');
