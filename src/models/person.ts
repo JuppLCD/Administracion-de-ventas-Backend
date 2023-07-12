@@ -15,14 +15,14 @@ export default function personSchema(sequelize: Sequelize) {
 			},
 
 			type_person: {
-				type: DataTypes.ENUM('0', '1'), // natural (0) or legal (1) person
+				type: DataTypes.ENUM('Natural', 'Legal'),
 				allowNull: false,
 			},
 			document_number: {
 				type: DataTypes.STRING,
 			},
 			document_type: {
-				type: DataTypes.STRING,
+				type: DataTypes.ENUM('CUIT', 'DNI', 'Pasaporte', 'Cédula de Identidad'),
 			},
 
 			phone: {

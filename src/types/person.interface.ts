@@ -3,8 +3,8 @@ import type { Model, Optional } from 'sequelize';
 export interface IPerson {
 	id: number;
 
-	type_person: number; // values "0" for natural person or "1" for legal  person
-	document_type: string;
+	type_person: ITypePerson;
+	document_type: ITypeDocument;
 	document_number: string;
 
 	phone: string;
@@ -12,7 +12,8 @@ export interface IPerson {
 	name: string;
 }
 
-// type ITypePerson = 'Natural person' | 'Legal person';
+export type ITypePerson = 'Natural' | 'Legal';
+export type ITypeDocument = 'CUIT' | 'DNI' | 'Pasaporte' | 'Cédula de Identidad';
 
 type IPersonCreationAttributes = Optional<IPerson, 'id'>;
 
