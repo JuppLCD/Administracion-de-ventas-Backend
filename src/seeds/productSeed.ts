@@ -19,7 +19,7 @@ export async function productSeed(productsToGenerate: number = 30) {
 			code: createCode(5),
 			img: 'https://dummyimage.com/300x200/000/fff.png',
 			price: parseFloat(faker.commerce.price()),
-			stock: faker.number.int({ min: 1, max: 50 }),
+			stock: 0, // faker.number.int({ min: 1, max: 50 })
 		});
 	}
 }
