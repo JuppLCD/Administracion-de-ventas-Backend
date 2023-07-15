@@ -26,7 +26,7 @@ export default function productEntreyDetailSchema(sequelize: Sequelize) {
 				type: DataTypes.INTEGER,
 			},
 			price: {
-				type: DataTypes.DECIMAL(12, 4),
+				type: DataTypes.DECIMAL(10, 3),
 			},
 		},
 		{
