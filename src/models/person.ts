@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import type { Sequelize } from 'sequelize';
-import type { IPersonModel } from '../types/person.interface';
+import type { IPersonModel } from '../types/models/person.interface';
 
 export default function personSchema(sequelize: Sequelize) {
 	return sequelize.define<IPersonModel>(

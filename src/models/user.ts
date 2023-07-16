@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import type { Sequelize } from 'sequelize';
-import type { IUserModel } from '../types/user.interface';
+import type { IUserModel } from '../types/models/user.interface';
 
 export default function userSchema(sequelize: Sequelize) {
 	return sequelize.define<IUserModel>(

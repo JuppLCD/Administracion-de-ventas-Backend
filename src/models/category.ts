@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import type { Sequelize } from 'sequelize';
-import type { ICategoryModel } from '../types/category.interface';
+import type { ICategoryModel } from '../types/models/category.interface';
 
 export default function categorySchema(sequelize: Sequelize) {
 	return sequelize.define<ICategoryModel>(

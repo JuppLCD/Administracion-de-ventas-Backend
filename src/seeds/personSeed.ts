@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { PersonModel } from '../db';
 
-import { ITypeDocument } from '../types/person.interface';
+import { ITypeDocument } from '../types/models/person.interface';
 
 export async function personSeed(PersonsToGenerate: number = 10) {
 	for (let i = 0; i < PersonsToGenerate; i++) {

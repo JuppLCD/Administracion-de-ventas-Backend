@@ -6,7 +6,7 @@ import { UserCode } from '../utils/userCode';
 import { sendCode } from '../utils/mailer';
 import { generateToken } from '../utils/jwtToken';
 
-import type { IUserModel } from '../types/user.interface';
+import type { IUserModel } from '../types/models/user.interface';
 
 export class AuthServices {
 	static generateCode = async (email: string) => {

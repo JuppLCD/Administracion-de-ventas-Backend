@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import type { Sequelize } from 'sequelize';
-import type { IRoleModel } from '../types/role.interface';
+import type { IRoleModel } from '../types/models/role.interface';
 
 export default function roleSchema(sequelize: Sequelize) {
 	return sequelize.define<IRoleModel>(

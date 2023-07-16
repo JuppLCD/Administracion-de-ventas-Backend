@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import type { Sequelize } from 'sequelize';
-import type { IProductEntryDetailModel } from '../types/product_entry_detail.interface';
+import type { IProductEntryDetailModel } from '../types/models/product_entry_detail.interface';
 
 export default function productEntreyDetailSchema(sequelize: Sequelize) {
 	return sequelize.define<IProductEntryDetailModel>(
