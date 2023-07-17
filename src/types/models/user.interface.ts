@@ -19,8 +19,6 @@ export interface IUser {
 // TODO: Ver que tipos de documentos hay
 // export type IDocumentType = 'DNI' | 'Cédula de identidad' | 'Pasaporte';
 
-export type IPayloadJWT = Omit<IUser, 'code'>;
-
 type IUserCreationAttributes = Optional<IUser, 'id'>;
 
 export type IUserModel = Model<IUser, IUserCreationAttributes>;
