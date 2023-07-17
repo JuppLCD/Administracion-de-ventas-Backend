@@ -1,0 +1,54 @@
+@host= http://localhost:8001/api/product
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZV9pZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZnVsbE5hbWUiOiJUeWxlciBOaXR6c2NoZSIsImlhdCI6MTY4OTYzMzY2NCwiZXhwIjoxNjg5Nzc3NjY0fQ.JI9If6gT3P2vg7JHYIfTg4x5srKsiC1kYN7wUb2VmdQ
+
+### Get all products
+GET {{host}}/
+Authorization: {{token}}
+
+### Get product by id
+GET {{host}}/1
+Authorization: {{token}}
+
+### Get product by category id
+GET {{host}}/category/1
+Authorization: {{token}}
+
+### Search product by category id
+POSt {{host}}/search
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "code" : "44"
+}
+
+### Create product
+POST {{host}}/store
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+	"category_id": "1",
+
+	"name": "El Nombre",
+	"type": "producto",
+	"description": "Esta es la descripcion del nuevo producto",
+	"code": "das4f61",
+	"img": "https://dummyimage.com/300x200/000/fff.png",
+
+	"price": "30",
+	"stock": "0"
+}
+
+### Update product
+PUT {{host}}/31
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "name": "El Nombre (EDITED)"
+}
+
+### Delete product
+DELETE  {{host}}/31
+Authorization: {{token}}

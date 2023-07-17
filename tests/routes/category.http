@@ -1,0 +1,33 @@
+@host= http://localhost:8001/api/category
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZV9pZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZnVsbE5hbWUiOiJUeWxlciBOaXR6c2NoZSIsImlhdCI6MTY4OTYzMzY2NCwiZXhwIjoxNjg5Nzc3NjY0fQ.JI9If6gT3P2vg7JHYIfTg4x5srKsiC1kYN7wUb2VmdQ
+
+### Get all categories
+GET {{host}}/
+Authorization: {{token}}
+
+### Get category by id
+GET {{host}}/1
+Authorization: {{token}}
+
+### Create category
+POST {{host}}/store
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "name": "Name",
+    "description": "Description of new category"
+}
+
+### Update category
+PUT {{host}}/6
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "name": "Name (EDITED)"
+}
+
+### Delete category
+DELETE  {{host}}/6
+Authorization: {{token}}
