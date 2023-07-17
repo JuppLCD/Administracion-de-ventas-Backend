@@ -1,21 +1,23 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import boom from '@hapi/boom';
 
 import { JsonWebTokenError, TokenExpiredError } from 'jsonwebtoken';
 
 import { verifyToken } from '../utils/jwtToken';
 
-export default async function authJwt(req: Request, res: Response, next: NextFunction) {
-	const token: string | undefined = req.headers['authorization'] || req.body.token;
+import type { AuthRequest } from '../types/request/authRequest.interface';
+import type { IPayloadJWT } from '../types/jwt.interface';
+
+export default async function authJwt(req: AuthRequest, res: Response, next: NextFunction) {
+	const token: string | undefined = req.headers['authorization'];
 	if (!token) {
 		next(boom.unauthorized('Authorization required'));
 	}
 
 	try {
-		const info = await verifyToken(token as string);
+		const userInfo = await verifyToken(token as string);
 
-		req.body.infoToken = info;
-		req.body.code = token;
+		req.user = userInfo as IPayloadJWT;
 		next();
 	} catch (err) {
 		if (err instanceof TokenExpiredError) {

@@ -32,8 +32,8 @@ export class AuthServices {
 			throw boom.unauthorized('El codigo ya expiro');
 		}
 
-		const { code: userCode, ...payloadJWT } = user.dataValues;
-		const token = await generateToken(payloadJWT);
+		const { id, role_id, fullName } = user.dataValues;
+		const token = await generateToken({ id, role_id, email, fullName });
 
 		return token;
 	};
