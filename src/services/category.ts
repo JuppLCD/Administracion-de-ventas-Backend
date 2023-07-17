@@ -33,7 +33,8 @@ export class CategoryServices {
 			throw boom.badData('No hay campos para actualizar');
 		}
 
-		const category = await CategoryModel.update(fieldsToUpdate, { where: { id: categoryId } });
+		await CategoryModel.update(fieldsToUpdate, { where: { id: categoryId } });
+		const category = await this.getById(categoryId);
 
 		return category;
 	};

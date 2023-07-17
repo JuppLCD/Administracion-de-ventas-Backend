@@ -55,7 +55,8 @@ export class ProductServices {
 			throw boom.badData('No hay campos para actualizar');
 		}
 
-		const product = await ProductModel.update(fieldsToUpdate, { where: { id: productId } });
+		await ProductModel.update(fieldsToUpdate, { where: { id: productId } });
+		const product = await this.getById(productId);
 
 		return product;
 	};
