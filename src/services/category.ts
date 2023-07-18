@@ -1,7 +1,7 @@
 import boom from '@hapi/boom';
 
 import { CategoryModel } from '../db';
-import { ICategoryToStore, ICategoryToUpdate } from '../types/services/category.interface';
+import { ICategoryToStore, ICategoryFields } from '../types/services/category.interface';
 
 export class CategoryServices {
 	static getAll = async () => {
@@ -28,7 +28,7 @@ export class CategoryServices {
 		return category;
 	};
 
-	static update = async (categoryId: number, fieldsToUpdate: ICategoryToUpdate) => {
+	static update = async (categoryId: number, fieldsToUpdate: ICategoryFields) => {
 		if (Object.keys(fieldsToUpdate).length === 0) {
 			throw boom.badData('No hay campos para actualizar');
 		}

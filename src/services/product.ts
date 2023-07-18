@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 
 import { ProductModel } from '../db';
 
-import type { IProductSearchByField, IProductToStore, IProductToUpdate } from '../types/services/product.interface';
+import type { IProductSearchByField, IProductToStore, IProductFields } from '../types/services/product.interface';
 
 export class ProductServices {
 	static getAll = async () => {
@@ -50,7 +50,7 @@ export class ProductServices {
 		return product;
 	};
 
-	static update = async (productId: number, fieldsToUpdate: IProductToUpdate) => {
+	static update = async (productId: number, fieldsToUpdate: IProductFields) => {
 		if (Object.keys(fieldsToUpdate).length === 0) {
 			throw boom.badData('No hay campos para actualizar');
 		}
