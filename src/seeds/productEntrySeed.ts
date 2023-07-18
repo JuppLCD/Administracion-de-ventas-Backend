@@ -6,10 +6,9 @@ import { addZero } from '../utils/dateFormat';
 
 import { ProductEntryServices } from '../services/productEntry';
 
-import type { Sequelize } from 'sequelize';
 import type { IVoucherSeries, IVoucherType } from '../types/models/product_entry.interface';
 
-export async function productEntrySeed(sequelize: Sequelize, productEntriesToGenerate: number = 5) {
+export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 	const possibleProviders = await PersonModel.findAll({
 		where: {
 			type_person: 'Legal',
@@ -60,6 +59,6 @@ export async function productEntrySeed(sequelize: Sequelize, productEntriesToGen
 			})),
 		};
 
-		await ProductEntryServices.newProductEntry(sequelize, data);
+		await ProductEntryServices.newProductEntry(data);
 	}
 }

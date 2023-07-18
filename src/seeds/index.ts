@@ -32,13 +32,12 @@ async function seedDB() {
 		await personSeed();
 		console.log('Person seeding was done successfully');
 
-		await productEntrySeed(sequelize);
+		await productEntrySeed();
 		console.log('ProductEntry seeding was done successfully');
 
 		console.log('##################################');
 		console.log('The seeding of the database was carried out correctly');
 		console.log('##################################');
-		await sequelize.close();
 	} catch (err) {
 		await sequelize.sync({ force: true });
 		console.log('##################################');

@@ -1,14 +1,14 @@
 import boom from '@hapi/boom';
 
+import { sequelize } from '../db/connection';
 import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db';
 
 import { getCurrentDateDBFormat } from '../utils/dateFormat';
 
-import type { Sequelize } from 'sequelize';
 import type { IProductEntryToStore, ISupplierProduct } from '../types/services/productEntry.interface';
 
 export class ProductEntryServices {
-	static newProductEntry = async (sequelize: Sequelize, data: IProductEntryToStore) => {
+	static newProductEntry = async (data: IProductEntryToStore) => {
 		await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
 			const newProductEntry = await ProductEntryModel.create({
