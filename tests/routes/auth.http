@@ -1,7 +1,7 @@
 @host= http://localhost:8001/api/auth
 
 @email = test@test.com
-@code = mI5GZUGYvD
+@code = tOB8JfJiT4
 
 ### Generate and send conde
 POST {{host}}/code

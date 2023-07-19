@@ -1,5 +1,5 @@
 @host= http://localhost:8001/api/product
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZV9pZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZnVsbE5hbWUiOiJUeWxlciBOaXR6c2NoZSIsImlhdCI6MTY4OTYzMzY2NCwiZXhwIjoxNjg5Nzc3NjY0fQ.JI9If6gT3P2vg7JHYIfTg4x5srKsiC1kYN7wUb2VmdQ
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZV9pZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZnVsbE5hbWUiOiJWZXJhIFdpbGxtcyIsImlhdCI6MTY4OTgwMzQwNywiZXhwIjoxNjg5OTQ3NDA3fQ.Nsb7rwqTWGeveihVGDv6hBoZqHJmM9MoKf8xEJtZpCQ
 
 ### Get all products
 GET {{host}}/
