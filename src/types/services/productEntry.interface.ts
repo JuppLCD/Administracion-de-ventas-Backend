@@ -1,13 +1,11 @@
-import type { IProduct } from '../models/product.interface';
-import type { IVoucherSeries, IVoucherType } from '../models/product_entry.interface';
+import type { IVoucherSeries, IVoucherType } from '../voucher.interface';
+import type { IProductData } from './product.interface';
 
-export interface IProductEntryToStore {
+export interface IProductEntryData {
 	user_id: number;
 	provider_id: number;
 	voucher_number: string;
 	voucher_series: IVoucherSeries;
 	voucher_type: IVoucherType;
-	products: ISupplierProduct[];
+	products: IProductData[];
 }
-
-export type ISupplierProduct = Pick<IProduct, 'id' | 'code' | 'price' | 'stock'>;

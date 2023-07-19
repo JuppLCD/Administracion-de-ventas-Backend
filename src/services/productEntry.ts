@@ -5,10 +5,11 @@ import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db'
 
 import { getCurrentDateDBFormat } from '../utils/dateFormat';
 
-import type { IProductEntryToStore, ISupplierProduct } from '../types/services/productEntry.interface';
+import type { IProductEntryData } from '../types/services/productEntry.interface';
+import type { IProductData } from '../types/services/product.interface';
 
 export class ProductEntryServices {
-	static newProductEntry = async (data: IProductEntryToStore) => {
+	static newProductEntry = async (data: IProductEntryData) => {
 		await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
 			const newProductEntry = await ProductEntryModel.create({
@@ -32,7 +33,7 @@ export class ProductEntryServices {
 		});
 	};
 
-	static getTotalAndTaxs(data: IProductEntryToStore) {
+	static getTotalAndTaxs(data: IProductEntryData) {
 		let total = data.products.reduce((prev, curr) => {
 			return prev + curr.price * curr.stock;
 		}, 0);
@@ -47,7 +48,7 @@ export class ProductEntryServices {
 		return { total, tax };
 	}
 
-	static productEntryRecord = async (productEntryId: number, product: ISupplierProduct) => {
+	static productEntryRecord = async (productEntryId: number, product: IProductData) => {
 		await ProductEntryDetailModel.create({
 			product_entry_id: productEntryId,
 			product_id: product.id,
@@ -56,7 +57,7 @@ export class ProductEntryServices {
 		});
 	};
 
-	static incrementProduct = async (product: ISupplierProduct) => {
+	static incrementProduct = async (product: IProductData) => {
 		const productInDB = await ProductModel.findOne({ where: { id: product.id, code: product.code } });
 
 		if (!productInDB) {

@@ -6,7 +6,7 @@ import { addZero } from '../utils/dateFormat';
 
 import { ProductEntryServices } from '../services/productEntry';
 
-import type { IVoucherSeries, IVoucherType } from '../types/models/product_entry.interface';
+import type { IVoucherSeries, IVoucherType } from '../types/voucher.interface';
 
 export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 	const possibleProviders = await PersonModel.findAll({
