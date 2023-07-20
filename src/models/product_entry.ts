@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 
+import { VOUCHER_SERIES, VOUCHER_TYPE } from '../config';
+
 import type { Sequelize } from 'sequelize';
 import type { IProductEntryModel } from '../types/models/product_entry.interface';
 
@@ -23,10 +25,10 @@ export default function productEntreySchema(sequelize: Sequelize) {
 			},
 
 			voucher_type: {
-				type: DataTypes.ENUM('FACTURA A', 'FACTURA B', 'FACTURA C'),
+				type: DataTypes.ENUM(...VOUCHER_TYPE),
 			},
 			voucher_series: {
-				type: DataTypes.ENUM('Serie VD-01', 'Serie VD-02', 'Serie C-01', 'Serie C-02', 'Serie C-03'),
+				type: DataTypes.ENUM(...VOUCHER_SERIES),
 			},
 			voucher_number: {
 				type: DataTypes.STRING(10),

@@ -6,7 +6,7 @@ import { addZero } from '../utils/dateFormat';
 
 import { ProductEntryServices } from '../services/productEntry';
 
-import type { IVoucherSeries, IVoucherType } from '../types/voucher.interface';
+import { VOUCHER_SERIES, VOUCHER_TYPE } from '../config';
 
 export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 	const possibleProviders = await PersonModel.findAll({
@@ -34,22 +34,13 @@ export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 			vaucher_number = lastProductEntry.dataValues.id;
 		}
 
-		const possibleVaucherType: IVoucherType[] = ['FACTURA A', 'FACTURA B', 'FACTURA C'];
-		const possibleVaucherSeries: IVoucherSeries[] = [
-			'Serie VD-01',
-			'Serie VD-02',
-			'Serie C-01',
-			'Serie C-02',
-			'Serie C-03',
-		];
-
 		const data = {
 			user_id: 1,
 			provider_id: faker.helpers.arrayElement(possibleProviders).dataValues.id,
 
 			voucher_number: addZero(vaucher_number, 10 - `${vaucher_number}`.length), // "0000000000", "0000000001", "0005800110", etc
-			voucher_series: faker.helpers.arrayElement(possibleVaucherSeries),
-			voucher_type: faker.helpers.arrayElement(possibleVaucherType),
+			voucher_series: faker.helpers.arrayElement(VOUCHER_SERIES),
+			voucher_type: faker.helpers.arrayElement(VOUCHER_TYPE),
 
 			products: productsThatEnter.map((product) => ({
 				id: product.dataValues.id,

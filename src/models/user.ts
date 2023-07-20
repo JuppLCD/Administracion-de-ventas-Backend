@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 
+import { DOCUMENT_TYPE } from '../config';
+
 import type { Sequelize } from 'sequelize';
 import type { IUserModel } from '../types/models/user.interface';
 
@@ -34,7 +36,7 @@ export default function userSchema(sequelize: Sequelize) {
 				type: DataTypes.STRING,
 			},
 			document_type: {
-				type: DataTypes.STRING,
+				type: DataTypes.ENUM(...DOCUMENT_TYPE),
 			},
 
 			phone: {
