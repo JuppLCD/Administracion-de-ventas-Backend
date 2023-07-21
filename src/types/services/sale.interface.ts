@@ -1,11 +1,6 @@
-import type { IVoucherSeries, IVoucherType } from '../voucher.interface';
+import { ISale } from '../models/sale.interface';
 import type { IProductData } from './product.interface';
 
-export interface ISaleData {
-	user_id: number;
-	client_id: number;
-	voucher_number: string;
-	voucher_series: IVoucherSeries;
-	voucher_type: IVoucherType;
-	products: IProductData[];
-}
+export type ISaleData = Omit<ISale, 'id' | 'tax' | 'total' | 'date'> & { products: IProductData[] };
+
+export type ISaleFields = Partial<Omit<ISale, 'id'>>;

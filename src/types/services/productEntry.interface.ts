@@ -1,11 +1,6 @@
-import type { IVoucherSeries, IVoucherType } from '../voucher.interface';
+import { IProductEntry } from '../models/product_entry.interface';
 import type { IProductData } from './product.interface';
 
-export interface IProductEntryData {
-	user_id: number;
-	provider_id: number;
-	voucher_number: string;
-	voucher_series: IVoucherSeries;
-	voucher_type: IVoucherType;
-	products: IProductData[];
-}
+export type IProductEntryToStore = Omit<IProductEntry, 'id' | 'tax' | 'total' | 'date'> & { products: IProductData[] };
+
+export type IProductEntryFields = Partial<Omit<IProductEntry, 'id'>>;

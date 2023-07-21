@@ -5,11 +5,30 @@ import { SaleModel, SaleDetailModel, ProductModel } from '../db';
 
 import { getCurrentDateDBFormat } from '../utils/dateFormat';
 
-import type { ISaleData } from '../types/services/sale.interface';
+import type { ISaleData, ISaleFields } from '../types/services/sale.interface';
 import type { IProductData } from '../types/services/product.interface';
 
 export class SaleServices {
-	static newSale = async (data: ISaleData) => {
+	static getAll = async () => {
+		const sales = await SaleModel.findAll();
+		return sales;
+	};
+
+	static getById = async (saleId: number) => {
+		const sale = await SaleModel.findOne({
+			where: {
+				id: saleId,
+			},
+		});
+
+		if (!sale) {
+			throw boom.notFound('La caregoria no existente en la base de datos');
+		}
+
+		return sale;
+	};
+
+	static store = async (data: ISaleData) => {
 		await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
 			const newSale = await SaleModel.create({
@@ -71,5 +90,21 @@ export class SaleServices {
 		}
 
 		await productInDB.decrement({ stock: product.stock });
+	};
+
+	static update = async (saleId: number, fieldsToUpdate: ISaleFields) => {
+		if (Object.keys(fieldsToUpdate).length === 0) {
+			throw boom.badData('No hay campos para actualizar');
+		}
+
+		await SaleModel.update(fieldsToUpdate, { where: { id: saleId } });
+		const sale = await this.getById(saleId);
+
+		return sale;
+	};
+
+	static destroy = async (saleId: number) => {
+		const sale = await this.getById(saleId);
+		await sale.destroy();
 	};
 }

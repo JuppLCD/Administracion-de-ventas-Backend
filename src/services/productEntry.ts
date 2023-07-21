@@ -5,11 +5,30 @@ import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db'
 
 import { getCurrentDateDBFormat } from '../utils/dateFormat';
 
-import type { IProductEntryData } from '../types/services/productEntry.interface';
+import type { IProductEntryFields, IProductEntryToStore } from '../types/services/productEntry.interface';
 import type { IProductData } from '../types/services/product.interface';
 
 export class ProductEntryServices {
-	static newProductEntry = async (data: IProductEntryData) => {
+	static getAll = async () => {
+		const productEntries = await ProductEntryModel.findAll();
+		return productEntries;
+	};
+
+	static getById = async (productEntryId: number) => {
+		const productEntry = await ProductEntryModel.findOne({
+			where: {
+				id: productEntryId,
+			},
+		});
+
+		if (!productEntry) {
+			throw boom.notFound('La caregoria no existente en la base de datos');
+		}
+
+		return productEntry;
+	};
+
+	static store = async (data: IProductEntryToStore) => {
 		await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
 			const newProductEntry = await ProductEntryModel.create({
@@ -33,7 +52,7 @@ export class ProductEntryServices {
 		});
 	};
 
-	static getTotalAndTaxs(data: IProductEntryData) {
+	static getTotalAndTaxs(data: IProductEntryToStore) {
 		let total = data.products.reduce((prev, curr) => {
 			return prev + curr.price * curr.stock;
 		}, 0);
@@ -65,5 +84,21 @@ export class ProductEntryServices {
 		}
 
 		await productInDB.increment({ stock: product.stock });
+	};
+
+	static update = async (productEntryId: number, fieldsToUpdate: IProductEntryFields) => {
+		if (Object.keys(fieldsToUpdate).length === 0) {
+			throw boom.badData('No hay campos para actualizar');
+		}
+
+		await ProductEntryModel.update(fieldsToUpdate, { where: { id: productEntryId } });
+		const productEntry = await this.getById(productEntryId);
+
+		return productEntry;
+	};
+
+	static destroy = async (productEntryId: number) => {
+		const productEntry = await this.getById(productEntryId);
+		await productEntry.destroy();
 	};
 }
