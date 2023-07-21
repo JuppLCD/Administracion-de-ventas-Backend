@@ -46,6 +46,6 @@ export async function saleSeed(saleToGenerate: number = 5) {
 			})),
 		};
 
-		await SaleServices.newSale(data);
+		await SaleServices.store(data);
 	}
 }

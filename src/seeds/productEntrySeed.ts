@@ -50,6 +50,6 @@ export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 			})),
 		};
 
-		await ProductEntryServices.newProductEntry(data);
+		await ProductEntryServices.store(data);
 	}
 }
