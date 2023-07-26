@@ -40,9 +40,9 @@ export async function saleSeed(saleToGenerate: number = 5) {
 
 			products: productsToSale.map((product) => ({
 				id: product.dataValues.id,
-				price: product.dataValues.price * 0.7,
+				price: product.dataValues.price,
 				code: product.dataValues.code,
-				stock: faker.number.int({ min: 1, max: 50 }),
+				stock: faker.number.int({ min: 5, max: 20 }),
 			})),
 		};
 
