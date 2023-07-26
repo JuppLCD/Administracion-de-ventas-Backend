@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import boom from '@hapi/boom';
 
 import { AuthServices } from '../services/auth';
+import { generateToken } from '../utils/jwtToken';
+
+import type { AuthRequest } from '../types/request/authRequest.interface';
 
 export class AuthController {
 	static generateCode = async (req: Request, res: Response, next: NextFunction) => {
@@ -33,6 +36,20 @@ export class AuthController {
 			res.json({
 				message: 'INICIASTE SESION ' + code,
 				token: token,
+			});
+		} catch (err) {
+			next(err);
+		}
+	};
+
+	static validateToken = async (req: AuthRequest, res: Response, next: NextFunction) => {
+		try {
+			const newToken = await AuthServices.validateToken(req.user);
+
+			// TODO: Tengo que enviar el codigo como una cokie
+			res.json({
+				message: 'Token validado y extendido',
+				token: newToken,
 			});
 		} catch (err) {
 			next(err);

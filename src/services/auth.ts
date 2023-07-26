@@ -3,10 +3,11 @@ import boom from '@hapi/boom';
 import { UserModel } from '../db';
 
 import { UserCode } from '../utils/userCode';
-import { sendCode } from '../utils/mailer';
+// import { sendCode } from '../utils/mailer';
 import { generateToken } from '../utils/jwtToken';
 
 import type { IUserModel } from '../types/models/user.interface';
+import type { IPayloadJWT } from '../types/jwt.interface';
 
 export class AuthServices {
 	static generateCode = async (email: string) => {
@@ -14,7 +15,7 @@ export class AuthServices {
 
 		// Generar codigo y enviar
 		const { newCode, new_expire_code } = UserCode.generateCode();
-		sendCode({ code: newCode, email });
+		// sendCode({ code: newCode, email });
 
 		await this.updateCode(user, newCode, new_expire_code);
 
@@ -33,6 +34,17 @@ export class AuthServices {
 		}
 
 		const { id, role_id, fullName } = user.dataValues;
+		const token = await generateToken({ id, role_id, email, fullName });
+
+		return token;
+	};
+
+	static validateToken = async (user: IPayloadJWT | undefined) => {
+		if (!user) {
+			throw boom.badImplementation('Error al obtener los datos del token');
+		}
+
+		const { id, role_id, email, fullName } = user;
 		const token = await generateToken({ id, role_id, email, fullName });
 
 		return token;
