@@ -42,7 +42,7 @@ export async function saleSeed(saleToGenerate: number = 5) {
 				id: product.dataValues.id,
 				price: product.dataValues.price,
 				code: product.dataValues.code,
-				stock: faker.number.int({ min: 5, max: 20 }),
+				stock: faker.number.int({ min: 5, max: 15 }),
 			})),
 		};
 

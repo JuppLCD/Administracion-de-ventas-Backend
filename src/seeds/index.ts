@@ -33,7 +33,7 @@ async function seedDB() {
 		await personSeed();
 		console.log('Person seeding was done successfully');
 
-		await productEntrySeed();
+		await productEntrySeed(10);
 		console.log('ProductEntry seeding was done successfully');
 
 		await saleSeed();

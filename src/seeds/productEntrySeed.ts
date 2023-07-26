@@ -46,7 +46,7 @@ export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 				id: product.dataValues.id,
 				price: product.dataValues.price * 0.7,
 				code: product.dataValues.code,
-				stock: faker.number.int({ min: 1, max: 50 }),
+				stock: faker.number.int({ min: 20, max: 60 }),
 			})),
 		};
 
