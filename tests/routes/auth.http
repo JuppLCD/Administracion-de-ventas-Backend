@@ -18,7 +18,10 @@ Content-Type: application/json
 
 {
     "email" : "{{email}}",
-    "code" : "{{{{getCode.response.body.$.code}}}}"
+    "code" : "{{getCode.response.body.$.code}}"
 }
 
-
+### Validate Token
+# @name validateToken
+GET {{auth}}/validate_token
+Authorization: {{token}}
