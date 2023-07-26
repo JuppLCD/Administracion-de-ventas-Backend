@@ -1,23 +1,25 @@
-@host= http://localhost:8001/api/person
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZV9pZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZnVsbE5hbWUiOiJWZXJhIFdpbGxtcyIsImlhdCI6MTY4OTgwMzQwNywiZXhwIjoxNjg5OTQ3NDA3fQ.Nsb7rwqTWGeveihVGDv6hBoZqHJmM9MoKf8xEJtZpCQ
+@person= {{api}}/person
 
 ### Get all people
-GET {{host}}/
+# @name getAll
+GET {{person}}/
 Authorization: {{token}}
 
 ### Get person by id
-GET {{host}}/1
+# @name getById
+GET {{person}}/1
 Authorization: {{token}}
 
 ### Create person
-POST {{host}}/store
+# @name store
+POST {{person}}/store
 Authorization: {{token}}
 Content-Type: application/json
 
 {
     "type_person": "Legal",
     "document_type": "CUIT",
-    "document_number": "document_number of new person",
+    "document_number": "4864685484",
 
     "name": "Name person",
     "address": "address of new person",
@@ -26,7 +28,8 @@ Content-Type: application/json
 }
 
 ### Update person
-PUT {{host}}/11
+# @name update
+PUT {{person}}/{{store.response.body.$.person.id}}
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -35,5 +38,6 @@ Content-Type: application/json
 }
 
 ### Delete person
-DELETE  {{host}}/11
+# @name delete
+DELETE  {{person}}/{{store.response.body.$.person.id}}
 Authorization: {{token}}

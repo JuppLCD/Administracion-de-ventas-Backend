@@ -1,20 +1,23 @@
-@host= http://localhost:8001/api/product
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZV9pZCI6MSwiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIiwiZnVsbE5hbWUiOiJWZXJhIFdpbGxtcyIsImlhdCI6MTY4OTgwMzQwNywiZXhwIjoxNjg5OTQ3NDA3fQ.Nsb7rwqTWGeveihVGDv6hBoZqHJmM9MoKf8xEJtZpCQ
+@product= {{api}}/product
 
 ### Get all products
-GET {{host}}/
+# @name getAll
+GET {{product}}/
 Authorization: {{token}}
 
 ### Get product by id
-GET {{host}}/1
+# @name getById
+GET {{product}}/1
 Authorization: {{token}}
 
 ### Get product by category id
-GET {{host}}/category/1
+# @name getByCategory
+GET {{product}}/category/1
 Authorization: {{token}}
 
-### Search product by category id
-POSt {{host}}/search
+### Search product by field
+# @name searchByField
+POSt {{product}}/search
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -23,7 +26,8 @@ Content-Type: application/json
 }
 
 ### Create product
-POST {{host}}/store
+# @name store
+POST {{product}}/store
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -41,7 +45,8 @@ Content-Type: application/json
 }
 
 ### Update product
-PUT {{host}}/31
+# @name update
+PUT {{product}}/{{store.response.body.$.product.id}}
 Authorization: {{token}}
 Content-Type: application/json
 
@@ -50,5 +55,6 @@ Content-Type: application/json
 }
 
 ### Delete product
-DELETE  {{host}}/31
+# @name delete
+DELETE  {{product}}/{{store.response.body.$.product.id}}
 Authorization: {{token}}

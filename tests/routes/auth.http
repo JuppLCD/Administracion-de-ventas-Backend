@@ -1,10 +1,10 @@
-@host= http://localhost:8001/api/auth
+@auth= {{api}}/auth
 
 @email = test@test.com
-@code = tOB8JfJiT4
 
 ### Generate and send conde
-POST {{host}}/code
+# @name getCode
+POST {{auth}}/code
 Content-Type: application/json
 
 {
@@ -12,10 +12,13 @@ Content-Type: application/json
 }
 
 ### Login
-POST {{host}}/login
+# @name login
+POST {{auth}}/login
 Content-Type: application/json
 
 {
     "email" : "{{email}}",
-    "code" : "{{code}}"
+    "code" : "{{{{getCode.response.body.$.code}}}}"
 }
+
+
