@@ -22,14 +22,14 @@ export class SaleServices {
 		});
 
 		if (!sale) {
-			throw boom.notFound('La caregoria no existente en la base de datos');
+			throw boom.notFound('La venta no existente en la base de datos');
 		}
 
 		return sale;
 	};
 
 	static store = async (data: ISaleData) => {
-		await sequelize.transaction(async (t) => {
+		return await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
 			const newSale = await SaleModel.create({
 				user_id: data.user_id,
@@ -49,6 +49,8 @@ export class SaleServices {
 
 				this.decrementProduct(product);
 			}
+
+			return newSale;
 		});
 	};
 

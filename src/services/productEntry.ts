@@ -22,14 +22,14 @@ export class ProductEntryServices {
 		});
 
 		if (!productEntry) {
-			throw boom.notFound('La caregoria no existente en la base de datos');
+			throw boom.notFound('La entrada de productos no existente en la base de datos');
 		}
 
 		return productEntry;
 	};
 
 	static store = async (data: IProductEntryToStore) => {
-		await sequelize.transaction(async (t) => {
+		return await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
 			const newProductEntry = await ProductEntryModel.create({
 				user_id: data.user_id,
@@ -49,6 +49,8 @@ export class ProductEntryServices {
 
 				this.incrementProduct(product);
 			}
+
+			return newProductEntry;
 		});
 	};
 
