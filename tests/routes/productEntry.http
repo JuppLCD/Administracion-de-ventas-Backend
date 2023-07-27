@@ -1,0 +1,57 @@
+@productEntry= {{api}}/product_entry
+
+### Get all product entries
+# @name getAll
+GET {{productEntry}}/
+Authorization: {{token}}
+
+### Get product entry by id
+# @name getById
+GET {{productEntry}}/1
+Authorization: {{token}}
+
+
+### Create product entry
+# @name store
+POST {{productEntry}}/store
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "user_id": 1,
+	"provider_id": 1,
+
+	"voucher_number": "0005800110",
+	"voucher_series": "Serie C-01",
+	"voucher_type": "FACTURA A",
+
+	"products":[
+		{
+			"id": 1,
+			"price":50,
+			"code": "0lT6B",
+			"stock": 5
+		},
+		{
+			"id": 2,
+			"price": 50,
+			"code": "TShLp",
+			"stock": 5
+		}
+	]
+}
+
+### Update product entry
+# @name update
+PUT {{productEntry}}/{{store.response.body.$.productEntry.id}}
+Authorization: {{token}}
+Content-Type: application/json
+
+{
+    "voucher_type": "FACTURA B"
+}
+
+### Delete product entry
+# @name delete
+DELETE  {{productEntry}}/{{store.response.body.$.productEntry.id}}
+Authorization: {{token}}
