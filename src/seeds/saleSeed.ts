@@ -2,9 +2,7 @@ import { faker } from '@faker-js/faker';
 
 import { VOUCHER_SERIES, VOUCHER_TYPE } from '../config';
 
-import { PersonModel, ProductModel, SaleModel } from '../db';
-
-import { addZero } from '../utils/dateFormat';
+import { PersonModel, ProductModel } from '../db';
 
 import { SaleServices } from '../services/sale';
 
@@ -22,19 +20,19 @@ export async function saleSeed(saleToGenerate: number = 5) {
 	for (let i = 0; i < saleToGenerate; i++) {
 		const productsToSale = faker.helpers.arrayElements(possibleProducts, { min: 2, max: possibleProducts.length });
 
-		let vaucher_number = 0;
-		const lastSale = await SaleModel.findOne({
-			order: [['id', 'DESC']],
-		});
-		if (lastSale) {
-			vaucher_number = lastSale.dataValues.id;
-		}
+		// let vaucher_number = 0;
+		// const lastSale = await SaleModel.findOne({
+		// 	order: [['id', 'DESC']],
+		// });
+		// if (lastSale) {
+		// 	vaucher_number = lastSale.dataValues.id;
+		// }
 
 		const data = {
 			user_id: 1,
 			client_id: faker.helpers.arrayElement(possibleClients).dataValues.id,
 
-			voucher_number: addZero(vaucher_number, 10 - `${vaucher_number}`.length), // "0000000000", "0000000001", "0005800110", etc
+			// voucher_number: addZero(vaucher_number, 10 - `${vaucher_number}`.length), // "0000000000", "0000000001", "0005800110", etc
 			voucher_series: faker.helpers.arrayElement(VOUCHER_SERIES),
 			voucher_type: faker.helpers.arrayElement(VOUCHER_TYPE),
 
