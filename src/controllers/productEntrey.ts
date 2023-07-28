@@ -35,7 +35,7 @@ export class ProductEntryController {
 	};
 
 	static store = async (req: Request, res: Response, next: NextFunction) => {
-		const newProductEntry = req.body;
+		const newProductEntry = req.body; // * voucher_number puede ser undefined
 
 		try {
 			const productEntry = await ProductEntryServices.store(newProductEntry);

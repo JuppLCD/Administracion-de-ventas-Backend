@@ -3,7 +3,7 @@ import boom from '@hapi/boom';
 import { sequelize } from '../db/connection';
 import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db';
 
-import { getCurrentDateDBFormat } from '../utils/dateFormat';
+import { addZero, getCurrentDateDBFormat } from '../utils/dateFormat';
 
 import type { IProductEntryFields, IProductEntryToStore } from '../types/services/productEntry.interface';
 import type { IProductData } from '../types/services/product.interface';
@@ -31,6 +31,11 @@ export class ProductEntryServices {
 	static store = async (data: IProductEntryToStore) => {
 		return await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
+
+			if (data.voucher_number === undefined) {
+				data.voucher_number = await this.generateVoucherNumber();
+			}
+
 			const newProductEntry = await ProductEntryModel.create({
 				user_id: data.user_id,
 				provider_id: data.provider_id,
@@ -68,6 +73,21 @@ export class ProductEntryServices {
 
 		return { total, tax };
 	}
+
+	static generateVoucherNumber = async () => {
+		let n = 0;
+		const lastProductEntry = await ProductEntryModel.findOne({
+			order: [['id', 'DESC']],
+		});
+
+		if (lastProductEntry === null) {
+			throw boom.serverUnavailable('There was a problem assigning the voucher number');
+		}
+
+		n = lastProductEntry.dataValues.id;
+
+		return addZero(n, 10 - `${n}`.length);
+	};
 
 	static productEntryRecord = async (productEntryId: number, product: IProductData) => {
 		await ProductEntryDetailModel.create({

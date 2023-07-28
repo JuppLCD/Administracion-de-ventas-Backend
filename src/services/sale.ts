@@ -3,7 +3,7 @@ import boom from '@hapi/boom';
 import { sequelize } from '../db/connection';
 import { SaleModel, SaleDetailModel, ProductModel } from '../db';
 
-import { getCurrentDateDBFormat } from '../utils/dateFormat';
+import { addZero, getCurrentDateDBFormat } from '../utils/dateFormat';
 
 import type { ISaleData, ISaleFields } from '../types/services/sale.interface';
 import type { IProductData } from '../types/services/product.interface';
@@ -31,6 +31,11 @@ export class SaleServices {
 	static store = async (data: ISaleData) => {
 		return await sequelize.transaction(async (t) => {
 			const { total, tax } = this.getTotalAndTaxs(data);
+
+			if (data.voucher_number === undefined) {
+				data.voucher_number = await this.generateVoucherNumber();
+			}
+
 			const newSale = await SaleModel.create({
 				user_id: data.user_id,
 				client_id: data.client_id,
@@ -68,6 +73,21 @@ export class SaleServices {
 
 		return { total, tax };
 	}
+
+	static generateVoucherNumber = async () => {
+		let n = 0;
+		const lastSale = await SaleModel.findOne({
+			order: [['id', 'DESC']],
+		});
+
+		if (lastSale === null) {
+			throw boom.serverUnavailable('There was a problem assigning the voucher number');
+		}
+
+		n = lastSale.dataValues.id;
+
+		return addZero(n, 10 - `${n}`.length);
+	};
 
 	static productSaleRecord = async (saleId: number, product: IProductData) => {
 		await SaleDetailModel.create({
