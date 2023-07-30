@@ -3,7 +3,7 @@ import boom from '@hapi/boom';
 import { sequelize } from '../db/connection';
 import { SaleModel, SaleDetailModel, ProductModel } from '../db';
 
-import { addZero, getCurrentDateDBFormat } from '../utils/dateFormat';
+import { addZero } from '../utils/addZero';
 
 import type { ISaleData, ISaleFields } from '../types/services/sale.interface';
 import type { IProductData } from '../types/services/product.interface';
@@ -44,7 +44,6 @@ export class SaleServices {
 				voucher_series: data.voucher_series,
 				voucher_type: data.voucher_type,
 
-				date: getCurrentDateDBFormat(),
 				total,
 				tax,
 			});
@@ -80,11 +79,9 @@ export class SaleServices {
 			order: [['id', 'DESC']],
 		});
 
-		if (lastSale === null) {
-			throw boom.serverUnavailable('There was a problem assigning the voucher number');
+		if (lastSale !== null) {
+			n = lastSale.dataValues.id;
 		}
-
-		n = lastSale.dataValues.id;
 
 		return addZero(n, 10 - `${n}`.length);
 	};

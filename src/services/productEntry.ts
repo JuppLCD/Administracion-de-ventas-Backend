@@ -3,7 +3,7 @@ import boom from '@hapi/boom';
 import { sequelize } from '../db/connection';
 import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db';
 
-import { addZero, getCurrentDateDBFormat } from '../utils/dateFormat';
+import { addZero } from '../utils/addZero';
 
 import type { IProductEntryFields, IProductEntryToStore } from '../types/services/productEntry.interface';
 import type { IProductData } from '../types/services/product.interface';
@@ -19,6 +19,7 @@ export class ProductEntryServices {
 			where: {
 				id: productEntryId,
 			},
+			// include: [{ model: ProductEntryDetailModel, attributes: ['id', 'stock', 'price', 'product_id'], as: 'tete' }],
 		});
 
 		if (!productEntry) {
@@ -44,7 +45,6 @@ export class ProductEntryServices {
 				voucher_series: data.voucher_series,
 				voucher_type: data.voucher_type,
 
-				date: getCurrentDateDBFormat(),
 				total,
 				tax,
 			});
@@ -80,11 +80,9 @@ export class ProductEntryServices {
 			order: [['id', 'DESC']],
 		});
 
-		if (lastProductEntry === null) {
-			throw boom.serverUnavailable('There was a problem assigning the voucher number');
+		if (lastProductEntry !== null) {
+			n = lastProductEntry.dataValues.id;
 		}
-
-		n = lastProductEntry.dataValues.id;
 
 		return addZero(n, 10 - `${n}`.length);
 	};
