@@ -24,19 +24,10 @@ export async function productEntrySeed(productEntriesToGenerate: number = 5) {
 	for (let i = 0; i < productEntriesToGenerate; i++) {
 		const productsThatEnter = faker.helpers.arrayElements(possibleProducts, { min: 2, max: possibleProducts.length });
 
-		// let vaucher_number = 0;
-		// const lastProductEntry = await ProductEntryModel.findOne({
-		// 	order: [['id', 'DESC']],
-		// });
-		// if (lastProductEntry) {
-		// 	vaucher_number = lastProductEntry.dataValues.id;
-		// }
-
 		const data = {
 			user_id: 1,
 			provider_id: faker.helpers.arrayElement(possibleProviders).dataValues.id,
 
-			// voucher_number: addZero(vaucher_number, 10 - `${vaucher_number}`.length), // "0000000000", "0000000001", "0005800110", etc
 			voucher_series: faker.helpers.arrayElement(VOUCHER_SERIES),
 			voucher_type: faker.helpers.arrayElement(VOUCHER_TYPE),
 
