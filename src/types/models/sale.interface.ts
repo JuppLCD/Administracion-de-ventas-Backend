@@ -16,6 +16,6 @@ export interface ISale {
 	total: number;
 }
 
-type ISaleCreationAttributes = Optional<ISale, 'id'>;
+type ISaleCreationAttributes = Optional<ISale, 'id' | 'date'>;
 
 export type ISaleModel = Model<ISale, ISaleCreationAttributes>;

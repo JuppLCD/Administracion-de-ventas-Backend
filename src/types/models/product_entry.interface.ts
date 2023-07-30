@@ -17,6 +17,6 @@ export interface IProductEntry {
 	total: number;
 }
 
-type IProductEntryCreationAttributes = Optional<IProductEntry, 'id'>;
+type IProductEntryCreationAttributes = Optional<IProductEntry, 'id' | 'date'>;
 
 export type IProductEntryModel = Model<IProductEntry, IProductEntryCreationAttributes>;

@@ -2,6 +2,8 @@ import { DataTypes } from 'sequelize';
 
 import { VOUCHER_SERIES, VOUCHER_TYPE } from '../config';
 
+import { getDateInOurTimezone } from '../utils/dateFormat';
+
 import type { Sequelize } from 'sequelize';
 import type { ISaleModel } from '../types/models/sale.interface';
 
@@ -36,6 +38,11 @@ export default function saleSchema(sequelize: Sequelize) {
 
 			date: {
 				type: DataTypes.DATE,
+				defaultValue: DataTypes.NOW,
+				allowNull: false,
+				get() {
+					return getDateInOurTimezone(this.getDataValue('date'));
+				},
 			},
 
 			tax: {
