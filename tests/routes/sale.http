@@ -20,7 +20,6 @@ Content-Type: application/json
     "user_id": 1,
 	"client_id": 1,
 
-	"voucher_number": "0005800110",
 	"voucher_series": "Serie C-01",
 	"voucher_type": "FACTURA A",
 
@@ -28,13 +27,11 @@ Content-Type: application/json
 		{
 			"id": 1,
 			"price":50,
-			"code": "0lT6B",
 			"stock": 5
 		},
 		{
 			"id": 2,
 			"price": 50,
-			"code": "TShLp",
 			"stock": 5
 		}
 	]
