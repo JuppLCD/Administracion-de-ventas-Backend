@@ -37,7 +37,7 @@ PersonModel.hasMany(ProductEntryModel, { foreignKey: 'provider_id' });
 
 // Associations Model Product_Entry_Detail
 ProductEntryDetailModel.belongsTo(ProductEntryModel, { foreignKey: 'product_entry_id' });
-ProductEntryModel.hasMany(ProductEntryDetailModel, { foreignKey: 'product_entry_id' });
+ProductEntryModel.hasMany(ProductEntryDetailModel, { foreignKey: 'product_entry_id', as: 'details' });
 ProductEntryDetailModel.belongsTo(ProductModel, { foreignKey: 'product_id' });
 ProductModel.hasMany(ProductEntryDetailModel, { foreignKey: 'product_id' });
 
@@ -49,7 +49,7 @@ PersonModel.hasMany(SaleModel, { foreignKey: 'client_id' });
 
 // Associations Model Sale_Detail
 SaleDetailModel.belongsTo(SaleModel, { foreignKey: 'sale_id' });
-SaleModel.hasMany(SaleDetailModel, { foreignKey: 'sale_id' });
+SaleModel.hasMany(SaleDetailModel, { foreignKey: 'sale_id', as: 'details' });
 SaleDetailModel.belongsTo(ProductModel, { foreignKey: 'product_id' });
 ProductModel.hasMany(SaleDetailModel, { foreignKey: 'product_id' });
 

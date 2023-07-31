@@ -19,7 +19,7 @@ export class ProductEntryServices {
 			where: {
 				id: productEntryId,
 			},
-			// include: [{ model: ProductEntryDetailModel, attributes: ['id', 'stock', 'price', 'product_id'], as: 'tete' }],
+			include: { model: ProductEntryDetailModel, as: 'details', attributes: ['id', 'stock', 'price', 'product_id'] },
 		});
 
 		if (!productEntry) {

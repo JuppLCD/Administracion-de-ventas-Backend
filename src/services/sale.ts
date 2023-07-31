@@ -19,6 +19,7 @@ export class SaleServices {
 			where: {
 				id: saleId,
 			},
+			include: { model: SaleDetailModel, as: 'details', attributes: ['id', 'stock', 'price', 'product_id'] },
 		});
 
 		if (!sale) {
