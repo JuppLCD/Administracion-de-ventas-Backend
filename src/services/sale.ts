@@ -5,6 +5,8 @@ import { SaleModel, SaleDetailModel, ProductModel } from '../db';
 
 import { addZero } from '../utils/addZero';
 
+import type { IProductModel } from '../types/models/product.interface';
+import type { ISaleDetailModel } from '../types/models/sale_detail.interface';
 import type { ISaleData, ISaleFields } from '../types/services/sale.interface';
 import type { IProductData } from '../types/services/product.interface';
 
@@ -49,11 +51,8 @@ export class SaleServices {
 				tax,
 			});
 
-			for (const product of data.products) {
-				this.productSaleRecord(newSale.dataValues.id, product);
-
-				this.decrementProduct(product);
-			}
+			// Registration of the details of the sale of products and their decrease
+			this.recordDetailsAndDecrement(data, newSale.dataValues.id);
 
 			return newSale;
 		});
@@ -87,29 +86,51 @@ export class SaleServices {
 		return addZero(n, 10 - `${n}`.length);
 	};
 
-	static productSaleRecord = async (saleId: number, product: IProductData) => {
-		await SaleDetailModel.create({
-			sale_id: saleId,
-			product_id: product.id,
-			price: product.price,
-			stock: product.stock,
-		});
-	};
+	static recordDetailsAndDecrement = async (data: ISaleData, saleId: number) => {
+		// Get products sold
+		const productsToFind = data.products.map((product) =>
+			ProductModel.findOne({
+				where: {
+					id: product.id,
+					// code: product.code // ! Quitar luego, es para no tener que estar buscando el codigo de un producto en la DB
+				},
+			})
+		);
+		const products = await Promise.all(productsToFind);
 
-	static decrementProduct = async (product: IProductData) => {
-		const productInDB = await ProductModel.findOne({ where: { id: product.id, code: product.code } });
+		const productsToDecremet: Promise<IProductModel>[] = [];
+		const saleRecord: Promise<ISaleDetailModel>[] = [];
+		for (const productInDB of products) {
+			if (productInDB === null) {
+				throw boom.notFound(`El producto no exite en la DB`);
+			}
+			const productData = data.products.find((p) => p.id === productInDB.dataValues.id) as IProductData;
 
-		if (!productInDB) {
-			throw boom.notFound('El producto no exite en la DB');
+			saleRecord.push(
+				SaleDetailModel.create({
+					sale_id: saleId,
+					product_id: productData.id,
+					price: productData.price,
+					stock: productData.stock,
+				})
+			);
+			productsToDecremet.push(this.decrementProduct(productInDB, productData));
 		}
 
-		if (productInDB.dataValues.stock - product.stock < 0) {
+		// Recording sale details
+		await Promise.all(saleRecord);
+		// Decresing the stock of products that have just entered
+		await Promise.all(productsToDecremet);
+	};
+
+	static decrementProduct = async (productInDB: IProductModel, productData: IProductData) => {
+		if (productInDB.dataValues.stock - productData.stock < 0) {
 			throw boom.badData(
-				`No hay sufuciente stock. El stock del producto es ${productInDB.dataValues.stock} y el stock requerido es de ${product.stock}`
+				`No hay sufuciente stock. El stock del producto es ${productInDB.dataValues.stock} y el stock requerido es de ${productData.stock}`
 			);
 		}
 
-		await productInDB.decrement({ stock: product.stock });
+		return await productInDB.decrement({ stock: productData.stock });
 	};
 
 	static update = async (saleId: number, fieldsToUpdate: ISaleFields) => {

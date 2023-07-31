@@ -5,6 +5,8 @@ import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db'
 
 import { addZero } from '../utils/addZero';
 
+import type { IProductModel } from '../types/models/product.interface';
+import type { IProductEntryDetailModel } from '../types/models/product_entry_detail.interface';
 import type { IProductEntryFields, IProductEntryToStore } from '../types/services/productEntry.interface';
 import type { IProductData } from '../types/services/product.interface';
 
@@ -49,11 +51,8 @@ export class ProductEntryServices {
 				tax,
 			});
 
-			for (const product of data.products) {
-				this.productEntryRecord(newProductEntry.dataValues.id, product);
-
-				this.incrementProduct(product);
-			}
+			// Registration of the details of the entry of products and its increase
+			this.recordDetailsAndIncrement(data, newProductEntry.dataValues.id);
 
 			return newProductEntry;
 		});
@@ -87,23 +86,41 @@ export class ProductEntryServices {
 		return addZero(n, 10 - `${n}`.length);
 	};
 
-	static productEntryRecord = async (productEntryId: number, product: IProductData) => {
-		await ProductEntryDetailModel.create({
-			product_entry_id: productEntryId,
-			product_id: product.id,
-			price: product.price,
-			stock: product.stock,
-		});
-	};
+	static recordDetailsAndIncrement = async (data: IProductEntryToStore, productEntryId: number) => {
+		// Getting the products that come in
+		const productsToFind = data.products.map((product) =>
+			ProductModel.findOne({
+				where: {
+					id: product.id,
+					// code: product.code // ! Quitar luego, es para no tener que estar buscando el codigo de un producto en la DB
+				},
+			})
+		);
+		const products = await Promise.all(productsToFind);
 
-	static incrementProduct = async (product: IProductData) => {
-		const productInDB = await ProductModel.findOne({ where: { id: product.id, code: product.code } });
+		const productsToIncrement: Promise<IProductModel>[] = [];
+		const productEntryRecord: Promise<IProductEntryDetailModel>[] = [];
+		for (const productInDB of products) {
+			if (productInDB === null) {
+				throw boom.notFound(`El producto no exite en la DB`);
+			}
+			const productData = data.products.find((p) => p.id === productInDB.dataValues.id) as IProductData;
 
-		if (!productInDB) {
-			throw boom.notFound('El producto no exite en la DB');
+			productEntryRecord.push(
+				ProductEntryDetailModel.create({
+					product_entry_id: productEntryId,
+					product_id: productData.id,
+					price: productData.price,
+					stock: productData.stock,
+				})
+			);
+			productsToIncrement.push(productInDB.increment({ stock: productData.stock }));
 		}
 
-		await productInDB.increment({ stock: product.stock });
+		// Recording product entry details
+		await Promise.all(productEntryRecord);
+		// Increasing the stock of products that have just entered
+		await Promise.all(productsToIncrement);
 	};
 
 	static update = async (productEntryId: number, fieldsToUpdate: IProductEntryFields) => {
