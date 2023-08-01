@@ -8,3 +8,5 @@ URL_DEPLOY =
 - [Category](./docs/category.md)
 - [Product](./docs/product.md)
 - [Person](./docs/person.md)
+- [Product entry](./docs/productEntry.md)
+- [Sale](./docs/sale.md)
