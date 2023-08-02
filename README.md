@@ -23,7 +23,7 @@ Para comenzar a utilizar la API, siga estos pasos:
 1. Clonar el repositorio desde GitHub:
 
 ```bash
-git clone https://github.com/tu-usuario/administracion-de-ventas-backend.git
+git clone https://github.com/JuppLCD/Administracion-de-ventas-Backend.git
 cd administracion-de-ventas-backend
 ```
 
