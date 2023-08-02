@@ -22,17 +22,17 @@ const SaleModel = saleSchema(sequelize);
 const SaleDetailModel = saleDetailSchema(sequelize);
 
 // Associations Model User
-UserModel.belongsTo(RoleModel, { foreignKey: 'role_id' });
-RoleModel.hasMany(UserModel, { foreignKey: 'role_id' });
+UserModel.belongsTo(RoleModel, { foreignKey: 'role_id', as: 'role' });
+RoleModel.hasMany(UserModel, { foreignKey: 'role_id', as: 'users' });
 
 // Associations Model Product
-ProductModel.belongsTo(CategoryModel, { foreignKey: 'category_id' });
-CategoryModel.hasMany(ProductModel, { foreignKey: 'category_id' });
+ProductModel.belongsTo(CategoryModel, { foreignKey: 'category_id', as: 'category' });
+CategoryModel.hasMany(ProductModel, { foreignKey: 'category_id', as: 'products' });
 
 // Associations Model Product_Entry
 ProductEntryModel.belongsTo(UserModel, { foreignKey: 'user_id' });
 UserModel.hasMany(ProductEntryModel, { foreignKey: 'user_id' });
-ProductEntryModel.belongsTo(PersonModel, { foreignKey: 'provider_id' });
+ProductEntryModel.belongsTo(PersonModel, { foreignKey: 'provider_id', as: 'provider' }); // Revisar que funcione bien
 PersonModel.hasMany(ProductEntryModel, { foreignKey: 'provider_id' });
 
 // Associations Model Product_Entry_Detail
@@ -44,7 +44,7 @@ ProductModel.hasMany(ProductEntryDetailModel, { foreignKey: 'product_id' });
 // Associations Model Sale
 SaleModel.belongsTo(UserModel, { foreignKey: 'user_id' });
 UserModel.hasMany(SaleModel, { foreignKey: 'user_id' });
-SaleModel.belongsTo(PersonModel, { foreignKey: 'client_id' });
+SaleModel.belongsTo(PersonModel, { foreignKey: 'client_id', as: 'client' });
 PersonModel.hasMany(SaleModel, { foreignKey: 'client_id' });
 
 // Associations Model Sale_Detail
