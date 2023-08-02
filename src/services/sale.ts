@@ -5,6 +5,7 @@ import { SaleModel, SaleDetailModel, ProductModel } from '../db';
 
 import { addZero } from '../utils/addZero';
 
+import type { ISaleModel } from '../types/models/sale.interface';
 import type { IProductModel } from '../types/models/product.interface';
 import type { ISaleDetailModel } from '../types/models/sale_detail.interface';
 import type { ISaleData, ISaleFields } from '../types/services/sale.interface';
@@ -13,10 +14,10 @@ import type { IProductData } from '../types/services/product.interface';
 export class SaleServices {
 	static getAll = async () => {
 		const sales = await SaleModel.findAll();
-		return sales;
+		return sales.map((s) => s.toJSON());
 	};
 
-	static getById = async (saleId: number) => {
+	static getById = async (saleId: number, returnModel = false) => {
 		const sale = await SaleModel.findOne({
 			where: {
 				id: saleId,
@@ -28,7 +29,7 @@ export class SaleServices {
 			throw boom.notFound('La venta no existente en la base de datos');
 		}
 
-		return sale;
+		return returnModel ? sale : sale.toJSON();
 	};
 
 	static store = async (data: ISaleData) => {
@@ -54,7 +55,7 @@ export class SaleServices {
 			// Registration of the details of the sale of products and their decrease
 			this.recordDetailsAndDecrement(data, newSale.dataValues.id);
 
-			return newSale;
+			return newSale.toJSON();
 		});
 	};
 
@@ -145,7 +146,7 @@ export class SaleServices {
 	};
 
 	static destroy = async (saleId: number) => {
-		const sale = await this.getById(saleId);
+		const sale = (await this.getById(saleId, true)) as ISaleModel;
 		await sale.destroy();
 	};
 }

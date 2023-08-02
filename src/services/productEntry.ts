@@ -5,6 +5,7 @@ import { ProductEntryDetailModel, ProductEntryModel, ProductModel } from '../db'
 
 import { addZero } from '../utils/addZero';
 
+import type { IProductEntryModel } from '../types/models/product_entry.interface';
 import type { IProductModel } from '../types/models/product.interface';
 import type { IProductEntryDetailModel } from '../types/models/product_entry_detail.interface';
 import type { IProductEntryFields, IProductEntryToStore } from '../types/services/productEntry.interface';
@@ -13,10 +14,10 @@ import type { IProductData } from '../types/services/product.interface';
 export class ProductEntryServices {
 	static getAll = async () => {
 		const productEntries = await ProductEntryModel.findAll();
-		return productEntries;
+		return productEntries.map((pE) => pE.toJSON());
 	};
 
-	static getById = async (productEntryId: number) => {
+	static getById = async (productEntryId: number, returnModel = false) => {
 		const productEntry = await ProductEntryModel.findOne({
 			where: {
 				id: productEntryId,
@@ -28,7 +29,7 @@ export class ProductEntryServices {
 			throw boom.notFound('La entrada de productos no existente en la base de datos');
 		}
 
-		return productEntry;
+		return returnModel ? productEntry : productEntry.toJSON();
 	};
 
 	static store = async (data: IProductEntryToStore) => {
@@ -54,7 +55,7 @@ export class ProductEntryServices {
 			// Registration of the details of the entry of products and its increase
 			this.recordDetailsAndIncrement(data, newProductEntry.dataValues.id);
 
-			return newProductEntry;
+			return newProductEntry.toJSON();
 		});
 	};
 
@@ -135,7 +136,7 @@ export class ProductEntryServices {
 	};
 
 	static destroy = async (productEntryId: number) => {
-		const productEntry = await this.getById(productEntryId);
+		const productEntry = (await this.getById(productEntryId, true)) as IProductEntryModel;
 		await productEntry.destroy();
 	};
 }
