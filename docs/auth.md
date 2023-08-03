@@ -3,21 +3,29 @@
 ##### Generate code
 
 ```
+REQUEST
+
 POST /api/auth/code
-Content-Type: application/json
 
 {
     "email": string,
 }
 ```
 
-RES => { "message" : string }
+```
+RESPONSE
+
+{
+    "message" : string
+}
+```
 
 ##### Login
 
 ```
+REQUEST
+
 POST /api/auth/login
-Content-Type: application/json
 
 {
     "email": string,
@@ -25,13 +33,27 @@ Content-Type: application/json
 }
 ```
 
-RES => { "token" : string }
+```
+RESPONSE
+
+{
+    "token" : string
+}
+```
 
 ##### Validate token
 
 ```
+REQUEST
+
 POST /api/auth/validate_token
 Authorization: token
 ```
 
-RES => { "token" : string }
+```
+RESPONSE
+
+{
+    "token" : string
+}
+```
