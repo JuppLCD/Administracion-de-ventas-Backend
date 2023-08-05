@@ -1,6 +1,6 @@
 import boom from '@hapi/boom';
 
-import { PersonModel } from '../db';
+import { PersonModel, ProductEntryModel, SaleModel } from '../db';
 
 import type { IPersonFields, IPersonToStore } from '../types/services/person.interface';
 import type { IPersonModel } from '../types/models/person.interface';
@@ -9,6 +9,34 @@ export class PersonServices {
 	static getAll = async () => {
 		const people = await PersonModel.findAll();
 		return people.map((p) => p.toJSON());
+	};
+
+	static getAllProviders = async () => {
+		const providers = await PersonModel.findAll({
+			include: [
+				{
+					model: ProductEntryModel,
+					required: true,
+					as: 'product_entries',
+				},
+			],
+			order: [['id', 'ASC']],
+		});
+		return providers.map((p) => p.toJSON());
+	};
+
+	static getAllClients = async () => {
+		const providers = await PersonModel.findAll({
+			include: [
+				{
+					model: SaleModel,
+					required: true,
+					as: 'sales',
+				},
+			],
+			order: [['id', 'ASC']],
+		});
+		return providers.map((p) => p.toJSON());
 	};
 
 	static getById = async (categoryId: number, returnModel = false) => {

@@ -33,7 +33,7 @@ CategoryModel.hasMany(ProductModel, { foreignKey: 'category_id', as: 'products' 
 ProductEntryModel.belongsTo(UserModel, { foreignKey: 'user_id' });
 UserModel.hasMany(ProductEntryModel, { foreignKey: 'user_id' });
 ProductEntryModel.belongsTo(PersonModel, { foreignKey: 'provider_id', as: 'provider' }); // Revisar que funcione bien
-PersonModel.hasMany(ProductEntryModel, { foreignKey: 'provider_id' });
+PersonModel.hasMany(ProductEntryModel, { foreignKey: 'provider_id', as: 'product_entries' });
 
 // Associations Model Product_Entry_Detail
 ProductEntryDetailModel.belongsTo(ProductEntryModel, { foreignKey: 'product_entry_id' });
@@ -45,7 +45,7 @@ ProductModel.hasMany(ProductEntryDetailModel, { foreignKey: 'product_id' });
 SaleModel.belongsTo(UserModel, { foreignKey: 'user_id' });
 UserModel.hasMany(SaleModel, { foreignKey: 'user_id' });
 SaleModel.belongsTo(PersonModel, { foreignKey: 'client_id', as: 'client' });
-PersonModel.hasMany(SaleModel, { foreignKey: 'client_id' });
+PersonModel.hasMany(SaleModel, { foreignKey: 'client_id', as: 'sales' });
 
 // Associations Model Sale_Detail
 SaleDetailModel.belongsTo(SaleModel, { foreignKey: 'sale_id' });

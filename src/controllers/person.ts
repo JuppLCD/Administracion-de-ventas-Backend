@@ -16,6 +16,32 @@ export class PersonController {
 		}
 	};
 
+	static getAllProviders = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const providers = await PersonServices.getAllProviders();
+
+			res.json({
+				providers,
+			});
+		} catch (err) {
+			console.log(err);
+			next(err);
+		}
+	};
+
+	static getAllClients = async (req: Request, res: Response, next: NextFunction) => {
+		try {
+			const clients = await PersonServices.getAllClients();
+
+			res.json({
+				clients,
+			});
+		} catch (err) {
+			console.log(err);
+			next(err);
+		}
+	};
+
 	static getById = async (req: Request, res: Response, next: NextFunction) => {
 		const { personId } = req.params;
 
