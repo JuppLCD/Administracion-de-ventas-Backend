@@ -5,6 +5,16 @@
 GET {{person}}/
 Authorization: {{token}}
 
+### Get all providers
+# @name getAllProviders
+GET {{person}}/providers
+Authorization: {{token}}
+
+### Get all clients
+# @name getAllClients
+GET {{person}}/clients
+Authorization: {{token}}
+
 ### Get person by id
 # @name getById
 GET {{person}}/1
