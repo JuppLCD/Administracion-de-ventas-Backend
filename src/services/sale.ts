@@ -115,7 +115,7 @@ export class SaleServices {
 					stock: productData.stock,
 				})
 			);
-			productsToDecremet.push(this.decrementProduct(productInDB, productData));
+			productsToDecremet.push(this.decrementProduct(productInDB, productData.stock));
 		}
 
 		// Recording sale details
@@ -124,14 +124,14 @@ export class SaleServices {
 		await Promise.all(productsToDecremet);
 	};
 
-	static decrementProduct = async (productInDB: IProductModel, productData: IProductData) => {
-		if (productInDB.dataValues.stock - productData.stock < 0) {
+	static decrementProduct = async (productInDB: IProductModel, stockToDecrement: number) => {
+		if (productInDB.dataValues.stock - stockToDecrement < 0) {
 			throw boom.badData(
-				`No hay sufuciente stock. El stock del producto es ${productInDB.dataValues.stock} y el stock requerido es de ${productData.stock}`
+				`No hay sufuciente stock. El stock del producto es ${productInDB.dataValues.stock} y el stock requerido es de ${stockToDecrement}`
 			);
 		}
 
-		return await productInDB.decrement({ stock: productData.stock });
+		return await productInDB.decrement({ stock: stockToDecrement });
 	};
 
 	static update = async (saleId: number, fieldsToUpdate: ISaleFields) => {
@@ -146,7 +146,50 @@ export class SaleServices {
 	};
 
 	static destroy = async (saleId: number) => {
-		const sale = (await this.getById(saleId, true)) as ISaleModel;
-		await sale.destroy();
+		await sequelize.transaction(async (t) => {
+			// Getting the entity to delete
+			const sale = (await this.getById(saleId, true)) as ISaleModel;
+
+			// Getting your details
+			const details = await SaleDetailModel.findAll({
+				where: {
+					sale_id: saleId,
+				},
+			});
+
+			// Getting affected products
+			const productsToFind = details.map((detail) =>
+				ProductModel.findOne({
+					where: {
+						id: detail.dataValues.product_id,
+					},
+				})
+			);
+			const products = await Promise.all(productsToFind);
+
+			// Array where the promises of the reversal of the changes made in the stock for the sale are stored
+			const productsToIncrement: Promise<IProductModel>[] = [];
+			for (const productInDB of products) {
+				if (productInDB === null) {
+					throw boom.notFound(`El producto no exite en la DB`);
+				}
+				const stockToIncrement = details.find((d) => d.dataValues.product_id === productInDB.dataValues.id)?.dataValues
+					.stock as number;
+
+				productsToIncrement.push(productInDB.increment({ stock: stockToIncrement }));
+			}
+
+			// Delete the details of the sale to delete
+			const allDetailsToDelete = details.map((detail) => {
+				return detail.destroy();
+			});
+			await Promise.all(allDetailsToDelete);
+
+			// Reversing the changes made to the stock of the product by the sale
+			await Promise.all(productsToIncrement);
+
+			// Removing the sale
+			await sale.destroy();
+		});
 	};
 }

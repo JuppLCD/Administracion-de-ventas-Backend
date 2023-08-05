@@ -136,7 +136,60 @@ export class ProductEntryServices {
 	};
 
 	static destroy = async (productEntryId: number) => {
-		const productEntry = (await this.getById(productEntryId, true)) as IProductEntryModel;
-		await productEntry.destroy();
+		await sequelize.transaction(async (t) => {
+			// Getting the entity to delete
+			const productEntry = (await this.getById(productEntryId, true)) as IProductEntryModel;
+
+			// Getting your details
+			const details = await ProductEntryDetailModel.findAll({
+				where: {
+					product_entry_id: productEntryId,
+				},
+			});
+
+			// Getting affected products
+			const productsToFind = details.map((detail) =>
+				ProductModel.findOne({
+					where: {
+						id: detail.dataValues.product_id,
+					},
+				})
+			);
+			const products = await Promise.all(productsToFind);
+
+			// Array where the promises to revert the stock of the product for the entry of the product to be deleted are stored
+			const productsToDecremet: Promise<void>[] = [];
+			for (const productInDB of products) {
+				if (productInDB === null) {
+					throw boom.notFound(`El producto no exite en la DB`);
+				}
+				const stockToDicrement = details.find((d) => d.dataValues.product_id === productInDB.dataValues.id)?.dataValues
+					.stock as number;
+
+				productsToDecremet.push(this.decrementProduct(productInDB, stockToDicrement));
+			}
+
+			// Deleting the details of the product entry to delete
+			const allDetailsToDelete = details.map((detail) => {
+				return detail.destroy();
+			});
+			await Promise.all(allDetailsToDelete);
+
+			// Reversing changes made to product stock per product entry
+			await Promise.all(productsToDecremet);
+
+			// Removing the productEntry
+			await productEntry.destroy();
+		});
+	};
+
+	static decrementProduct = async (productInDB: IProductModel, stock: number) => {
+		if (productInDB.dataValues.stock - stock < 0) {
+			throw boom.badData(
+				`No hay sufuciente stock. El stock del producto es ${productInDB.dataValues.stock} y el stock requerido es de ${stock}`
+			);
+		}
+
+		await productInDB.decrement({ stock: stock });
 	};
 }
